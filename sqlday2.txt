@@ -90,3 +90,20 @@ dbms_output.put_line(q_email);
 dbms_output.put_line(q_handphone);
 end;
 /
+
+
+
+CREATE OR REPLACE TRIGGER chk_time
+       BEFORE INSERT OR UPDATE OR DELETE
+       ON customer
+       BEGIN
+              dbms_output.put_line('hi');
+       IF (TO_CHAR(sysdate,'DY') IN ('WED','SUN')) OR (TO_CHAR(sysdate,'HH24') NOT
+             BETWEEN '16' AND '17')
+              THEN
+               RAISE_APPLICATION_ERROR(-20400,'You cannot perform any DML operation');
+              END IF;
+       END;
+
+select TO_CHAR(invoicedate,'MON') from invoice2;
+
