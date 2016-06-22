@@ -1,0 +1,92 @@
+CREATE table "CUSTOMER" (
+    "CUSTOMER_NUMBER" NUMBER(10,0),
+    "NAME"            VARCHAR2(40),
+    "EMAIL"           VARCHAR2(30),
+    "HANDPHONE"       NUMBER(10,0),
+    constraint  "CUSTOMER_PK" primary key ("CUSTOMER_NUMBER")
+)
+/
+
+
+
+
+
+
+
+desc customer;
+desc invoice2;
+select c.customer_number,c.name,c.email,c.handphone,i.invoiceNumber,i.invoiceDate from customer c,invoice2 i where c.customer_number=i.customerRef;
+select * from customer,invoice2 where customer.customer_number=invoice2.customerRef;
+select c.customer_number,c.name,c.email,c.handphone,i.invoicenumber,i.invoiceDate,i.invoiceAmount,i.customerRef from customer c,invoice2 i where c.customer_number=i.customerRef(+);
+select b.invoiceNumber from invoice2 a,invoice2 b where a.customerRef=101 and a.invoiceDate =b.invoiceDate;
+select * from invoice2 a,invoice2 b where a.customerRef=101 and a.invoiceDate =b.invoiceDate;
+select *from invoice2 where customerRef =(select customer_number from customer where name='jo');
+
+
+CREATE OR REPLACE PROCEDURE add_customer(p_customernumber customer.customer_number%TYPE,p_name customer.name%TYPE,p_email customer.email%TYPE,p_handphone customer.handphone%TYPE)
+IS
+BEGIN
+insert into customer values(p_customernumber,p_name,p_email,p_handphone);
+END;
+/
+BEGIN
+add_customer(106,'eyui','awfjij@gmail.com',9999324532);
+END;
+END add_customer;
+/
+select * from customer;
+
+
+
+
+
+
+final
+
+
+
+
+desc customer;
+desc invoice2;
+select c.customer_number,c.name,c.email,c.handphone,i.invoiceNumber,i.invoiceDate from customer c,invoice2 i where c.customer_number=i.customerRef;
+select * from customer,invoice2 where customer.customer_number=invoice2.customerRef;
+select c.customer_number,c.name,c.email,c.handphone,i.invoicenumber,i.invoiceDate,i.invoiceAmount,i.customerRef from customer c,invoice2 i where c.customer_number=i.customerRef(+);
+select b.invoiceNumber from invoice2 a,invoice2 b where a.customerRef=101 and a.invoiceDate =b.invoiceDate;
+select * from invoice2 a,invoice2 b where a.customerRef=101 and a.invoiceDate =b.invoiceDate;
+select * from invoice2 where customerRef =(select customer_number from customer where name='Sruthi');
+select * from customer;
+
+CREATE OR REPLACE PROCEDURE add_customer(p_customernumber customer.customer_number%TYPE,p_name customer.name%TYPE,p_email customer.email%TYPE,p_handphone customer.handphone%TYPE)
+IS
+BEGIN
+insert into customer values(p_customernumber,p_name,p_email,p_handphone);
+END;
+/
+BEGIN
+add_customer(106,'eyui','awfjij@gmail.com',9999324532);
+END;
+END add_customer;
+/
+select * from customer;
+
+
+CREATE OR REPLACE PROCEDURE q_customer(q_customernumber IN customer.customer_number%TYPE,q_name OUT customer.name%TYPE,q_email OUT customer.email%TYPE,q_handphone OUT customer.handphone%TYPE)
+IS 
+BEGIN
+SELECT name,email,handphone INTO q_name,q_email,q_handphone FROM customer WHERE customer_number=q_customernumber;
+EXCEPTION
+WHEN NO_DATA_FOUND THEN
+RAISE_APPLICATION_ERROR(-20001,'Customer does not exist');
+END;
+/
+declare
+q_name customer.name%TYPE;
+q_email customer.email%TYPE;
+q_handphone customer.handphone%TYPE;
+begin
+q_customer(102,q_name,q_email,q_handphone);
+dbms_output.put_line(q_name);
+dbms_output.put_line(q_email);
+dbms_output.put_line(q_handphone);
+end;
+/
